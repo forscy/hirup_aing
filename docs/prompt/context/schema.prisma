@@ -12,9 +12,16 @@ model User {
   email          String           @unique
   password       String
   name           String
+  role           UserRole        @default(USER) // USER, ADMIN
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   activityMaster ActivityMaster[]
+  categories     Category[]       // Relasi untuk kategori yang dibuat user
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 model ActivityMaster {
@@ -24,11 +31,11 @@ model ActivityMaster {
   startTime      DateTime          // Waktu mulai (jam:menit:detik)
   endTime        DateTime          // Waktu selesai (jam:menit:detik)
   isRecurring    Boolean           @default(false)
-  frequency      String            // "harian", "mingguan", "bulanan"
+  frequency      Frequency            // "harian", "mingguan", "bulanan"
   // Untuk penjadwalan berulang
-  daysOfWeek     String?           // "1,2,3,4,5,6,7" (1=Senin, 7=Minggu) untuk mingguan
+  daysOfWeek     Days?           // "1,2,3,4,5,6,7" (1=Senin, 7=Minggu) untuk mingguan
   datesOfMonth   String?           // "1,15,28" untuk bulanan
-  daysOfMonth    String?           // Hari dalam bulan untuk bulanan
+  daysOfMonth    Days?           // Hari dalam bulan untuk bulanan
   categories     Category[]        @relation("ActivityCategories")
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
@@ -37,10 +44,26 @@ model ActivityMaster {
   occurrences    ActivityInstance[]
 }
 
+enum Frequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum Days {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model ActivityInstance {
   id              String        @id @default(uuid())
   activityDate    DateTime      // Tanggal spesifik kemunculan
-  status          String        // "Belum", "Selesai", "Ditunda", "Batalkan"
+  status          ActivityStatus @default(PENDING)        // "Belum", "Selesai", "Ditunda", "Batalkan"
   notes           String?       // Catatan khusus untuk kemunculan ini
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -48,8 +71,20 @@ model ActivityInstance {
   activityMaster  ActivityMaster @relation(fields: [activityMasterId], references: [id], onDelete: Cascade)
 }
 
+enum ActivityStatus {
+  PENDING
+  COMPLETED
+  POSTPONED
+  CANCELLED
+}
+
 model Category {
   id             String          @id @default(uuid())
-  name           String          @unique
+  name           String
   activities     ActivityMaster[] @relation("ActivityCategories")
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  
+  @@unique([name, userId])  // Memastikan nama kategori unik per user
+  @@index([userId])         // Index untuk performa query
 }
