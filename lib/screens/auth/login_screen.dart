@@ -70,13 +70,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Logo atau header image
-                    Image.asset(
-                      'assets/images/siluet-1.jpg',
-                      height: 120,
-                      width: 120,
-                      fit: BoxFit.contain,
-                    ),
                     const SizedBox(height: 32),
 
                     // Judul & Subtitle
@@ -178,6 +171,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     AuthButton(
                       text: 'Login',
                       onPressed: _login,
+                      isLoading: authState.isLoading,
+                    ),
+                    const SizedBox(height: 16),
+                    // Login user 1 button
+                    AuthButton(
+                      text: 'Login as User 1',
+                      onPressed: () async {
+                        await ref
+                            .read(authProvider.notifier)
+                            .login('user@example.com', 'password123');
+                      },
                       isLoading: authState.isLoading,
                     ),
                     const SizedBox(height: 16),

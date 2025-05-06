@@ -1,21 +1,22 @@
 import 'package:hirup_aing/data/providers/settings_provider.dart';
 import 'package:hirup_aing/services/settings_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FontSelectionView extends StatelessWidget {
+class FontSelectionView extends ConsumerWidget {
   const FontSelectionView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentFont = ref.watch(fontFamilyProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Select Font')),
       body: ListView.builder(
         itemCount: SettingsService.availableFonts.length,
         itemBuilder: (context, index) {
           final fontFamily = SettingsService.availableFonts[index];
-          final isSelected =
-              context.watch<SettingsProvider>().fontFamily == fontFamily;
+          final isSelected = currentFont == fontFamily;
 
           return ListTile(
             title: Text(
@@ -32,7 +33,9 @@ class FontSelectionView extends StatelessWidget {
             ),
             trailing: isSelected ? const Icon(Icons.check) : null,
             onTap: () {
-              context.read<SettingsProvider>().updateFontFamily(fontFamily);
+              ref
+                  .read(fontFamilyProvider.notifier)
+                  .updateFontFamily(fontFamily);
               Navigator.pop(context);
             },
           );

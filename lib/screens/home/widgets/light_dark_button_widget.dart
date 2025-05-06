@@ -1,15 +1,16 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hirup_aing/data/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class LightDarkButtonWidget extends StatefulWidget {
+class LightDarkButtonWidget extends ConsumerStatefulWidget {
   const LightDarkButtonWidget({super.key});
 
   @override
-  State<LightDarkButtonWidget> createState() => _LightDarkButtonWidgetState();
+  ConsumerState<LightDarkButtonWidget> createState() =>
+      _LightDarkButtonWidgetState();
 }
 
-class _LightDarkButtonWidgetState extends State<LightDarkButtonWidget> {
+class _LightDarkButtonWidgetState extends ConsumerState<LightDarkButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -23,11 +24,13 @@ class _LightDarkButtonWidgetState extends State<LightDarkButtonWidget> {
                 : Colors.blueGrey,
       ),
       onPressed: () {
-        Provider.of<SettingsProvider>(context, listen: false).updateThemeMode(
-          Theme.of(context).brightness == Brightness.dark
-              ? ThemeMode.light
-              : ThemeMode.dark,
-        );
+        ref
+            .watch(themeModeProvider.notifier)
+            .updateThemeMode(
+              Theme.of(context).brightness == Brightness.dark
+                  ? ThemeMode.light
+                  : ThemeMode.dark,
+            );
       },
     );
   }

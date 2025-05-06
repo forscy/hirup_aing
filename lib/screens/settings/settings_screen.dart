@@ -1,15 +1,18 @@
 import 'package:hirup_aing/data/providers/settings_provider.dart';
 import 'package:hirup_aing/screens/settings/widget/font_selection_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   static const routeName = '/settings';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+    final fontFamily = ref.watch(fontFamilyProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -17,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Pop the current route and go back to the previous one
+            Navigator.pop(context);
           },
         ),
       ),
@@ -32,10 +35,12 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             DropdownButton<ThemeMode>(
-              value: context.watch<SettingsProvider>().themeMode,
+              value: themeMode,
               onChanged: (ThemeMode? newValue) {
                 if (newValue != null) {
-                  context.read<SettingsProvider>().updateThemeMode(newValue);
+                  ref
+                      .read(themeModeProvider.notifier)
+                      .updateThemeMode(newValue);
                 }
               },
               items: const [
@@ -62,23 +67,18 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ListTile(
-              title: Consumer<SettingsProvider>(
-                builder:
-                    (context, value, child) =>
-                        Text('Current Font: ${value.fontFamily}'),
-              ),
-              subtitle: Consumer<SettingsProvider>(
-                builder:
-                    (context, value, child) => Text(
-                      'Sample text with this font',
-                      style: TextStyle(fontFamily: value.fontFamily),
-                    ),
+              title: Text('Current Font: $fontFamily'),
+              subtitle: Text(
+                'Sample text with this font',
+                style: TextStyle(fontFamily: fontFamily),
               ),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FontSelectionView()),
+                  MaterialPageRoute(
+                    builder: (context) => const FontSelectionView(),
+                  ),
                 );
               },
             ),

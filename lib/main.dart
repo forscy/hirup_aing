@@ -1,9 +1,7 @@
-import 'package:hirup_aing/data/providers/settings_provider.dart';
-import 'package:hirup_aing/services/settings_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:hirup_aing/app.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   // Ensure Flutter is initialized before calling any platform channels
@@ -12,27 +10,8 @@ Future<void> main() async {
   await initializeDateFormatting('id_ID', null);
 
   try {
-    // Initialize settings with error handling
-    final settingsService = SettingsService();
-    final settingsController = SettingsProvider(settingsService);
-
-    try {
-      await settingsController.loadSettings();
-    } catch (e) {
-      // Handle error loading settings or server time
-      // Continue with default settings
-      debugPrint('Error loading settings or server time: $e');
-    }
-
-    runApp(
-      MultiProvider(
-        providers: [
-          // App state
-          ChangeNotifierProvider(create: (_) => settingsController),
-        ],
-        child: const MyApp(),
-      ),
-    );
+    // Run the app with ProviderScope for Riverpod
+    runApp(const ProviderScope(child: MyApp()));
   } catch (e, stackTrace) {
     // Log any initialization errors
     debugPrint('Error during app initialization: $e');
