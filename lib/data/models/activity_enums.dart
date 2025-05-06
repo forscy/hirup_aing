@@ -1,25 +1,8 @@
-enum Frequency {
-  DAILY,
-  WEEKLY,
-  MONTHLY,
-}
+enum Frequency { DAILY, WEEKLY, MONTHLY }
 
-enum Days {
-  MONDAY,
-  TUESDAY,
-  WEDNESDAY,
-  THURSDAY,
-  FRIDAY,
-  SATURDAY,
-  SUNDAY,
-}
+enum Days { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
 
-enum ActivityStatus {
-  PENDING,
-  COMPLETED,
-  POSTPONED,
-  CANCELLED,
-}
+enum ActivityStatus { PENDING, COMPLETED, POSTPONED, CANCELLED }
 
 // Ekstensi untuk konversi ke string yang lebih mudah dibaca
 extension FrequencyExtension on Frequency {

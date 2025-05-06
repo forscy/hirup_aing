@@ -3,7 +3,8 @@ enum UserRole { USER, ADMIN }
 class User {
   final String id;
   final String email;
-  final String password; // Dalam aplikasi sebenarnya, ini tidak disimpan di model klien
+  final String
+  password; // Dalam aplikasi sebenarnya, ini tidak disimpan di model klien
   final String name;
   final UserRole role;
   final DateTime createdAt;
@@ -11,14 +12,14 @@ class User {
 
   User({
     required this.id,
-    required this.email, 
+    required this.email,
     required this.password,
     required this.name,
     this.role = UserRole.USER,
     DateTime? createdAt,
     DateTime? updatedAt,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+  }) : createdAt = createdAt ?? DateTime.now(),
+       updatedAt = updatedAt ?? DateTime.now();
 
   // Membuat salinan dengan atribut yang diperbarui
   User copyWith({

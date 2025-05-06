@@ -32,8 +32,8 @@ class ActivityMaster {
     required this.userId,
     DateTime? createdAt,
     DateTime? updatedAt,
-  })  : this.createdAt = createdAt ?? DateTime.now(),
-        this.updatedAt = updatedAt ?? DateTime.now();
+  }) : this.createdAt = createdAt ?? DateTime.now(),
+       this.updatedAt = updatedAt ?? DateTime.now();
 
   // Membuat salinan dengan atribut yang diperbarui
   ActivityMaster copyWith({
@@ -73,24 +73,34 @@ class ActivityMaster {
   // Parse daysOfWeek dari string berseparator koma menjadi list Days
   static List<Days>? parseDaysOfWeek(String? daysString) {
     if (daysString == null || daysString.isEmpty) return null;
-    
-    return daysString.split(',').map((day) {
-      final index = int.tryParse(day.trim());
-      if (index == null || index < 1 || index > 7) {
-        return null;
-      }
-      // Mengkonversi dari 1-7 (Senin-Minggu) ke enum Days
-      return Days.values[index - 1];
-    }).where((day) => day != null).cast<Days>().toList();
+
+    return daysString
+        .split(',')
+        .map((day) {
+          final index = int.tryParse(day.trim());
+          if (index == null || index < 1 || index > 7) {
+            return null;
+          }
+          // Mengkonversi dari 1-7 (Senin-Minggu) ke enum Days
+          return Days.values[index - 1];
+        })
+        .where((day) => day != null)
+        .cast<Days>()
+        .toList();
   }
 
   // Parse datesOfMonth dari string berseparator koma menjadi list int
   static List<int>? parseDatesOfMonth(String? datesString) {
     if (datesString == null || datesString.isEmpty) return null;
-    
-    return datesString.split(',').map((date) {
-      return int.tryParse(date.trim());
-    }).where((date) => date != null && date >= 1 && date <= 31).cast<int>().toList();
+
+    return datesString
+        .split(',')
+        .map((date) {
+          return int.tryParse(date.trim());
+        })
+        .where((date) => date != null && date >= 1 && date <= 31)
+        .cast<int>()
+        .toList();
   }
 
   // Konversi dari JSON
@@ -106,28 +116,38 @@ class ActivityMaster {
         (f) => f.toString() == 'Frequency.${json['frequency']}',
         orElse: () => Frequency.DAILY,
       ),
-      daysOfWeek: json['daysOfWeek'] != null 
-          ? (json['daysOfWeek'] as List).map((day) => 
-              Days.values.firstWhere(
-                (d) => d.toString() == 'Days.${day}',
-                orElse: () => Days.MONDAY,
-              )
-            ).toList() 
-          : null,
-      datesOfMonth: json['datesOfMonth'] != null 
-          ? parseDatesOfMonth(json['datesOfMonth'])
-          : null,
-      daysOfMonth: json['daysOfMonth'] != null 
-          ? (json['daysOfMonth'] as List).map((day) => 
-              Days.values.firstWhere(
-                (d) => d.toString() == 'Days.${day}',
-                orElse: () => Days.MONDAY,
-              )
-            ).toList() 
-          : null,
-      categories: json['categories'] != null 
-          ? (json['categories'] as List).map((c) => Category.fromJson(c)).toList()
-          : [],
+      daysOfWeek:
+          json['daysOfWeek'] != null
+              ? (json['daysOfWeek'] as List)
+                  .map(
+                    (day) => Days.values.firstWhere(
+                      (d) => d.toString() == 'Days.${day}',
+                      orElse: () => Days.MONDAY,
+                    ),
+                  )
+                  .toList()
+              : null,
+      datesOfMonth:
+          json['datesOfMonth'] != null
+              ? parseDatesOfMonth(json['datesOfMonth'])
+              : null,
+      daysOfMonth:
+          json['daysOfMonth'] != null
+              ? (json['daysOfMonth'] as List)
+                  .map(
+                    (day) => Days.values.firstWhere(
+                      (d) => d.toString() == 'Days.${day}',
+                      orElse: () => Days.MONDAY,
+                    ),
+                  )
+                  .toList()
+              : null,
+      categories:
+          json['categories'] != null
+              ? (json['categories'] as List)
+                  .map((c) => Category.fromJson(c))
+                  .toList()
+              : [],
       userId: json['userId'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
@@ -144,9 +164,11 @@ class ActivityMaster {
       'endTime': endTime.toIso8601String(),
       'isRecurring': isRecurring,
       'frequency': frequency.toString().split('.').last,
-      'daysOfWeek': daysOfWeek?.map((day) => day.toString().split('.').last).toList(),
+      'daysOfWeek':
+          daysOfWeek?.map((day) => day.toString().split('.').last).toList(),
       'datesOfMonth': datesOfMonth,
-      'daysOfMonth': daysOfMonth?.map((day) => day.toString().split('.').last).toList(),
+      'daysOfMonth':
+          daysOfMonth?.map((day) => day.toString().split('.').last).toList(),
       'categories': categories.map((c) => c.toJson()).toList(),
       'userId': userId,
       'createdAt': createdAt.toIso8601String(),
