@@ -1,22 +1,24 @@
 class ApiConfig {
-  // Base URL untuk API
-  static const String baseUrl = 'https://api.simeta-app.com/api/v1';
+  // Base URL
+  static const String baseUrl = 'https://api.hirupaing.com/api/v1';
 
-  // Timeout untuk HTTP requests dalam detik
-  static const int connectionTimeout = 30;
-  static const int receiveTimeout = 30;
+  // Auth Endpoints
+  static const String login = '/auth/login';
+  static const String logout = '/auth/logout';
+  static const String register = '/auth/register';
+  static const String refreshToken = '/auth/refresh-token';
 
-  // Header default untuk request
-  static Map<String, String> getHeaders(String? token) {
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
+  // User Endpoints
+  static const String userProfile = '/user/profile';
+  static const String updateProfile = '/user/profile';
 
-    if (token != null) {
-      headers['Authorization'] = 'Bearer $token';
-    }
+  // Activity Endpoints
+  static const String activities = '/activities';
+  static const String activityInstances = '/activity-instances';
 
-    return headers;
-  }
+  // Category Endpoints
+  static const String categories = '/categories';
+
+  // Statistics Endpoints
+  static const String statistics = '/statistics';
 }

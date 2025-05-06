@@ -7,3 +7,4 @@ Konteks:
 Silahkan Pahami konteks aplikasi yang akan dibuat berdasarkan project ini.
 
 Tujuan:
+sekarang implementasikan bagian auth dulu yu, pake riverpod ya buat state managementnya dan juga pake services buat misahin layer bussinessnya yang fetch ke api. nanti apinya juga pake dio

@@ -1,5 +1,3 @@
-import 'package:hirup_aing/data/providers/server_time_provider.dart';
-import 'package:hirup_aing/services/server_time_service.dart';
 import 'package:hirup_aing/data/providers/settings_provider.dart';
 import 'package:hirup_aing/services/settings_service.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +16,8 @@ Future<void> main() async {
     final settingsService = SettingsService();
     final settingsController = SettingsProvider(settingsService);
 
-    final serverTimeService = ServerTimeService();
-    final serverTimeController = ServerTimeProvider(serverTimeService);
-
-    // Initialize the services
-
     try {
       await settingsController.loadSettings();
-      await serverTimeController.fetchServerTime();
     } catch (e) {
       // Handle error loading settings or server time
       // Continue with default settings
@@ -37,7 +29,6 @@ Future<void> main() async {
         providers: [
           // App state
           ChangeNotifierProvider(create: (_) => settingsController),
-          ChangeNotifierProvider(create: (_) => serverTimeController),
         ],
         child: const MyApp(),
       ),

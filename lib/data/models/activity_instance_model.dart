@@ -17,8 +17,8 @@ class ActivityInstance {
     required this.activityMasterId,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) : this.createdAt = createdAt ?? DateTime.now(),
-       this.updatedAt = updatedAt ?? DateTime.now();
+  }) : createdAt = createdAt ?? DateTime.now(),
+       updatedAt = updatedAt ?? DateTime.now();
 
   // Membuat salinan dengan atribut yang diperbarui
   ActivityInstance copyWith({

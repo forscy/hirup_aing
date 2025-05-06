@@ -32,8 +32,8 @@ class ActivityMaster {
     required this.userId,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) : this.createdAt = createdAt ?? DateTime.now(),
-       this.updatedAt = updatedAt ?? DateTime.now();
+  }) : createdAt = createdAt ?? DateTime.now(),
+       updatedAt = updatedAt ?? DateTime.now();
 
   // Membuat salinan dengan atribut yang diperbarui
   ActivityMaster copyWith({
@@ -121,7 +121,7 @@ class ActivityMaster {
               ? (json['daysOfWeek'] as List)
                   .map(
                     (day) => Days.values.firstWhere(
-                      (d) => d.toString() == 'Days.${day}',
+                      (d) => d.toString() == 'Days.$day',
                       orElse: () => Days.MONDAY,
                     ),
                   )
@@ -136,7 +136,7 @@ class ActivityMaster {
               ? (json['daysOfMonth'] as List)
                   .map(
                     (day) => Days.values.firstWhere(
-                      (d) => d.toString() == 'Days.${day}',
+                      (d) => d.toString() == 'Days.$day',
                       orElse: () => Days.MONDAY,
                     ),
                   )

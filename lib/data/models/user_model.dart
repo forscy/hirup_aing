@@ -1,31 +1,49 @@
-enum UserRole { USER, ADMIN }
+import 'package:equatable/equatable.dart';
 
-class User {
+enum UserRole { user, admin }
+
+extension UserRoleExtension on UserRole {
+  String get name {
+    switch (this) {
+      case UserRole.user:
+        return 'USER';
+      case UserRole.admin:
+        return 'ADMIN';
+    }
+  }
+
+  static UserRole fromString(String value) {
+    switch (value.toUpperCase()) {
+      case 'ADMIN':
+        return UserRole.admin;
+      case 'USER':
+      default:
+        return UserRole.user;
+    }
+  }
+}
+
+class User extends Equatable {
   final String id;
   final String email;
-  final String
-  password; // Dalam aplikasi sebenarnya, ini tidak disimpan di model klien
   final String name;
   final UserRole role;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  User({
+  const User({
     required this.id,
     required this.email,
-    required this.password,
     required this.name,
-    this.role = UserRole.USER,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) : createdAt = createdAt ?? DateTime.now(),
-       updatedAt = updatedAt ?? DateTime.now();
+    required this.role,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   // Membuat salinan dengan atribut yang diperbarui
   User copyWith({
     String? id,
     String? email,
-    String? password,
     String? name,
     UserRole? role,
     DateTime? createdAt,
@@ -34,7 +52,6 @@ class User {
     return User(
       id: id ?? this.id,
       email: email ?? this.email,
-      password: password ?? this.password,
       name: name ?? this.name,
       role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,
@@ -47,12 +64,8 @@ class User {
     return User(
       id: json['id'],
       email: json['email'],
-      password: json['password'],
       name: json['name'],
-      role: UserRole.values.firstWhere(
-        (role) => role.toString() == 'UserRole.${json['role']}',
-        orElse: () => UserRole.USER,
-      ),
+      role: UserRoleExtension.fromString(json['role']),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
@@ -63,11 +76,13 @@ class User {
     return {
       'id': id,
       'email': email,
-      'password': password,
       'name': name,
-      'role': role.toString().split('.').last,
+      'role': role.name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, email, name, role, createdAt, updatedAt];
 }
