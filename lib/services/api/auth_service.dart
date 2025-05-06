@@ -214,7 +214,7 @@ class AuthService {
 
         // Dalam mock environment, kita anggap token valid dan return user pertama
         if (token != null) {
-          return MockUsers.getAll().first;
+          return MockUsers.getAll()[1];
         }
 
         return null;

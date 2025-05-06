@@ -12,11 +12,11 @@
 
 ## 2. User
 
-1. Sebagai seorang User, saya ingin dapat mendaftar dengan email dan password agar memiliki akun pribadi untuk mencatat aktivitas saya.
+1. Sebagai seorang User, saya ingin dapat mendaftar dengan email dan password agar memiliki akun pribadi untuk mencatat aktivitas saya.[]
 
-2. Sebagai seorang User, saya ingin dapat login ke akun saya agar bisa mengakses catatan aktivitas pribadi saya.
+2. Sebagai seorang User, saya ingin dapat login ke akun saya agar bisa mengakses catatan aktivitas pribadi saya.[]
 
-3. Sebagai seorang User, saya ingin dapat logout dari aplikasi agar memastikan akun saya aman ketika tidak digunakan.
+3. Sebagai seorang User, saya ingin dapat logout dari aplikasi agar memastikan akun saya aman ketika tidak digunakan.[]
 
 4. Sebagai seorang User, saya ingin dapat membuat kategori aktivitas baru agar bisa mengorganisir aktivitas saya sesuai kebutuhan.
 
